@@ -17,6 +17,7 @@ public class PollingThread implements Runnable {
     private IChatMessage myMessage;
     private String username;
     private int lastMessage;
+    private boolean done;
     
     public PollingThread(IChatMessage remote, String username) {
         this.myMessage = remote;
@@ -28,7 +29,8 @@ public class PollingThread implements Runnable {
     public void run() {
         ArrayList log;
         int last;
-        while (true) {      // Doing polling
+        done = false;
+        while (!done) {      // Doing polling
             try {
                 log = myMessage.pull();
                 for (last = lastMessage ; log.size() > last ; last++) {
@@ -36,12 +38,14 @@ public class PollingThread implements Runnable {
                 }
                 lastMessage = last;
                 Thread.sleep(4000);
-//            } catch (InterruptedException e) {
-//                continue;   //System.err.println(e.getMessage());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }            
         }
+    }
+    
+    public void safeStop() {
+        done = true;
     }
     
 }

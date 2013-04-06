@@ -46,19 +46,20 @@ public class ChatClient {
                 System.out.println("=> Incorrect host or port.");
             } else {
                 System.out.println("=> Connection succesful.");
+                PollingThread pThread = new PollingThread(objRemote, u);
                 Thread[] t = new Thread[2];
-                t[0] = new Thread( new PollingThread(objRemote, u) );
+                t[0] = new Thread( pThread );
                 t[1] = new Thread( new TypingThread(objRemote, u) );
                 
                 t[0].start();
                 t[1].start();
                 
                 while (t[1].isAlive()) {}
-                t[0].interrupt();
+                pThread.safeStop();
                 System.out.println("=> Process terminated.");
             }
         } else {
-            System.out.println("=> Not enough information, hots and port required.");
+            System.out.println("=> Not enough information. args: <username> <host> <port>");
         }
     }
     

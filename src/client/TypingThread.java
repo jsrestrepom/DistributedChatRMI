@@ -25,16 +25,19 @@ public class TypingThread implements Runnable {
     public void run() {
         BufferedReader bufer = new BufferedReader(new InputStreamReader(System.in));
         String keyboard;
-        do {
+        boolean typing = true;
+        while (typing) {
             try {
-                System.out.print(username + ": ");
                 keyboard = bufer.readLine();
-                myMessage.send(keyboard);
+                if (keyboard.equals("/halt")) {
+                    typing = false;
+                    continue;
+                }
+                myMessage.send(username + ": " + keyboard);
             } catch (IOException e) {
-                keyboard = "";
+                continue;
             }
-        } while (!keyboard.equals("/halt"));
-        System.out.println("=> Process terminated.");
+        }
     }
     
 }
