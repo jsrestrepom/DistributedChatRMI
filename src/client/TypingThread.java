@@ -29,11 +29,13 @@ public class TypingThread implements Runnable {
         while (typing) {
             try {
                 keyboard = bufer.readLine();
-                if (keyboard.equals("/halt")) {
-                    typing = false;
-                    continue;
+                if (keyboard.length() > 0) {
+                    if (keyboard.equals("/halt")) {
+                        typing = false;
+                        continue;
+                    }
+                    myMessage.send(username + ": " + keyboard);
                 }
-                myMessage.send(username + ": " + keyboard);
             } catch (IOException e) {
                 continue;
             }

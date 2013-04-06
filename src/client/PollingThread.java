@@ -37,7 +37,7 @@ public class PollingThread implements Runnable {
                     System.out.println(log.get(last));
                 }
                 lastMessage = last;
-                Thread.sleep(4000);
+                Thread.sleep(2000);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }            
